@@ -5,7 +5,7 @@ import { usePlayer } from "@store/playerStore";
 import { getLyrics } from "@api/endpoints";
 import { Lyrics } from "@api/types";
 import { LyricsView } from "@components/Lyrics/LyricsView";
-import { Slider } from "expo-slider";
+import Slider from "@react-native-community/slider";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function NowPlayingScreen() {
