@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "SwingMusic",
+    "slug": "swingmusic-expo",
+    "scheme": "swingmusic",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.swingmusic.mobile"
+    },
+    "android": {
+      "package": "com.swingmusic.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "replace-with-your-eas-project-id"
+      }
+    },
+    "plugins": [
+      "expo-av",
+      "expo-secure-store",
+      "expo-linear-gradient",
+      "expo-slider"
+    ]
+  }
+}
