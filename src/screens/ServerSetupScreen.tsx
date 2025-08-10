@@ -1,46 +1,49 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { colors, spacing, radius } from "@theme/theme";
-import { useAuth } from "@hooks/useAuth";
+import { useServer } from "@hooks/useServer";
 
-export default function LoginScreen() {
-  const { login, loading } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function ServerSetupScreen() {
+  const { setBaseUrl, loading } = useServer();
+  const [url, setUrl] = useState("");
 
-  async function onLogin() {
+  async function onSetServer() {
     try {
-      await login(username, password);
+      const result = await setBaseUrl(url);
+      if (!result.ok) {
+        Alert.alert("Fehler", result.error);
+      }
     } catch (e: any) {
-      Alert.alert("Login fehlgeschlagen", e?.message ?? "Bitte prüfe deine Zugangsdaten.");
+      Alert.alert("Fehler", e?.message ?? "Server-URL konnte nicht gesetzt werden.");
     }
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>SwingMusic</Text>
-      <Text style={styles.subtitle}>Melde dich bei deinem Server an</Text>
+      <Text style={styles.subtitle}>Server-URL konfigurieren</Text>
 
       <TextInput
-        placeholder="Benutzername"
+        placeholder="https://dein-server.tld/"
         placeholderTextColor={colors.textDim}
         style={styles.input}
         autoCapitalize="none"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        placeholder="Passwort"
-        placeholderTextColor={colors.textDim}
-        style={styles.input}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
+        keyboardType="url"
+        value={url}
+        onChangeText={setUrl}
       />
 
-      <TouchableOpacity style={styles.button} onPress={onLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Anmelden..." : "Anmelden"}</Text>
+      <TouchableOpacity 
+        style={[styles.button, (!url.trim() || loading) && styles.buttonDisabled]} 
+        onPress={onSetServer} 
+        disabled={!url.trim() || loading}
+      >
+        <Text style={styles.buttonText}>{loading ? "Verbinden..." : "Server festlegen"}</Text>
       </TouchableOpacity>
+
+      <Text style={styles.hint}>
+        Gib die URL deines SwingMusic-Servers ein. Diese wird auf dem Gerät gespeichert.
+      </Text>
     </View>
   );
 }
@@ -66,5 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: spacing(1)
   },
-  buttonText: { color: "#000", fontWeight: "700" }
+  buttonDisabled: { opacity: 0.5 },
+  buttonText: { color: "#000", fontWeight: "700" },
+  hint: { color: colors.textDim, textAlign: "center", marginTop: spacing(2), fontSize: 14 }
 });

@@ -1,9 +1,9 @@
-import { Lyrics, LyricsLine } from "@api/types";
+import { Lyrics } from "@api/types";
 
 const timeTagRegex = /\[(\d{1,2}):(\d{1,2})(?:\.(\d{1,3}))?\]/g;
 
 export function parseLRC(lrc: string): Lyrics {
-  const lines: LyricsLine[] = [];
+  const lines: { timeMs: number; text: string }[] = [];
 
   lrc.split(/\r?\n/).forEach((line) => {
     const parts = [...line.matchAll(timeTagRegex)];
@@ -21,7 +21,7 @@ export function parseLRC(lrc: string): Lyrics {
   return { synced: true, lines, raw: lrc };
 }
 
-export function activeLyricIndex(lines: LyricsLine[], positionMs: number): number {
+export function activeLyricIndex(lines: { timeMs: number; text: string }[], positionMs: number): number {
   if (!lines.length) return -1;
   let lo = 0, hi = lines.length - 1, ans = -1;
   while (lo <= hi) {

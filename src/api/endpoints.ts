@@ -1,9 +1,10 @@
 import { api } from "./client";
 import { FavoritesSummary, LogInResult, Lyrics, Track, User } from "./types";
 import { parseLRC } from "@utils/lrc";
+import { getBaseUrl } from "@config/server";
 
 function base() {
-  return api.defaults.baseURL?.replace(/\/+$/, "") || "";
+  return (getBaseUrl() || "").replace(/\/+$/, "");
 }
 
 // Auth
@@ -14,14 +15,15 @@ export async function login(username: string, password: string): Promise<LogInRe
 
 export async function getMe(): Promise<User | null> {
   try {
-    const { data } = await api.get("auth/users"); // falls vorhanden; sonst null
+    // Adjust to /me if your API exposes it
+    const { data } = await api.get("auth/users");
     return data?.user ?? null;
   } catch {
     return null;
   }
 }
 
-// Home/Favorites
+// Favorites (Home)
 export async function getFavoritesSummary(params?: { track_limit?: number; album_limit?: number; artist_limit?: number }): Promise<FavoritesSummary> {
   const { data } = await api.get("favorites", { params });
   return {

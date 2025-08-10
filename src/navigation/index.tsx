@@ -6,9 +6,12 @@ import SearchScreen from "@screens/SearchScreen";
 import LibraryScreen from "@screens/LibraryScreen";
 import NowPlayingScreen from "@screens/NowPlayingScreen";
 import LoginScreen from "@screens/LoginScreen";
+import ServerSetupScreen from "@screens/ServerSetupScreen";
 import { colors } from "@theme/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@hooks/useAuth";
+import { useServer, useServerHydration } from "@hooks/useServer";
+import { View, ActivityIndicator } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,12 +43,27 @@ function Tabs() {
 }
 
 export default function RootNav() {
+  useServerHydration();
+  const serverLoading = useServer((s) => s.loading);
+  const baseUrl = useServer((s) => s.baseUrl);
   const user = useAuth((s) => s.user);
+
+  if (serverLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator color={colors.accent} />
+      </View>
+    );
+  }
+
+  const hasServer = !!baseUrl;
 
   return (
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator>
-        {!user ? (
+        {!hasServer ? (
+          <Stack.Screen name="ServerSetup" component={ServerSetupScreen} options={{ headerShown: false }} />
+        ) : !user ? (
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         ) : (
           <>
