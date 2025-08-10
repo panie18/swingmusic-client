@@ -16,13 +16,3 @@ export const radius = {
   lg: 16,
   pill: 999
 };
-
-export const shadow = {
-  card: {
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 4
-  }
-};
