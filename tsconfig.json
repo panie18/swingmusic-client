@@ -13,7 +13,7 @@
       "@store/*": ["src/store/*"],
       "@utils/*": ["src/utils/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@types/*": ["src/types/*"]
+      "@config/*": ["src/config/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]
