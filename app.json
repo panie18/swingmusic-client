@@ -24,8 +24,7 @@
     "plugins": [
       "expo-av",
       "expo-secure-store",
-      "expo-linear-gradient",
-      "expo-slider"
+      "expo-linear-gradient"
     ]
   }
 }
