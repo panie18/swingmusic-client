@@ -23,8 +23,7 @@
     },
     "plugins": [
       "expo-av",
-      "expo-secure-store",
-      "expo-linear-gradient"
+      "expo-secure-store"
     ]
   }
 }
